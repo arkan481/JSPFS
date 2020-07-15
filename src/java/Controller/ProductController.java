@@ -10,7 +10,9 @@ import Query.ProductQuery;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,10 +47,57 @@ public class ProductController extends BaseController {
         }
     }
     
-//    public void deleteByID() {
-//        String query = this.query.deletebyID;
-//        this.delete(query,new int[]{1});
-//    }
+    public boolean create(ProductModel productModel) {
+        Map<Integer,Object> map = new HashMap<>();
+        map.put(1, productModel.getProductName());
+        map.put(2, productModel.getCategory());
+        map.put(3, productModel.getQty());
+        map.put(4, productModel.getExpired_at());
+        
+        return this.preparedStatement(map, this.query.create);
+    }
+    
+    public ProductModel show(String id) throws SQLException {
+        ProductModel pm = new ProductModel();
+        
+        Map<Integer,Object> map = new HashMap<>();
+        map.put(1, id);
+        
+        String sql = this.query.show;
+        ResultSet rs = this.getWithParam(map, sql);
+        
+        if (rs.next()) {
+            pm.setId(rs.getInt("id"));
+            pm.setProductName(rs.getString("name"));
+            pm.setCategory(rs.getString("category"));
+            pm.setQty(rs.getInt("qty"));
+            pm.setExpired_at(rs.getString("exipred_at"));
+        }
+        
+        return pm;
+    }
+    
+    public boolean update(ProductModel model) {
+        Map<Integer,Object> map = new HashMap<>();
+        map.put(1, model.getProductName());
+        map.put(2, model.getCategory());
+        map.put(3, model.getQty());
+        map.put(4, model.getExpired_at());
+        map.put(5, model.getId());
+        
+        String sql = this.query.update;
+        
+        return this.preparedStatement(map, sql);
+    }
+    
+    public boolean delete(String id) {
+        String sql = this.query.delete;
+        
+        Map<Integer,Object> map = new HashMap<>();
+        map.put(1, id);
+        
+        return this.preparedStatement(map, sql);
+    }
     
 //    
 //    public static void main(String[] args) {

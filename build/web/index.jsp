@@ -12,13 +12,16 @@
         <jsp:include page="/views/layouts/head.jsp">
             <jsp:param name="title" value="Index"/>
         </jsp:include>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
     </head>
     <body>
 
         <div class="container pt-4">
             <jsp:include page="/views/layouts/navbar.jsp"></jsp:include>
                 <div class="row">
+                    <div class="col-4 pb-4">
+                        <a href="${pageContext.request.contextPath}/create" class="btn btn-sm btn-primary">Create</a>
+                    </div>
                     <div class="col-12">
                         <table class="table table-responsive table-hover">
                             <thead>
@@ -40,12 +43,15 @@
                                     <td><p>${item.qty}</p></td>
                                     <td><p>${item.expired_at}</p></td>
                                     <td>
-                                        <a class="btn btn-sm btn-primary" href="#">
+                                        <a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/edit?id=${item.id}" name="id" value="${item.id}">
                                             Edit
                                         </a>
-                                        <a class="btn btn-sm btn-danger" href="#">
+                                            <form action="" method="POST">
+                                                <button class="btn btn-sm btn-danger" value="${item.id}" name="del">Delete</button>
+                                            </form>
+<!--                                        <a class="btn btn-sm btn-danger" href="${pageContext.request.contextPath}/" onclick="">
                                             Delete
-                                        </a>
+                                        </a>-->
                                     </td>
                                 </tr>
                             </c:forEach>

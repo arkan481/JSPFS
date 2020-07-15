@@ -7,8 +7,11 @@
             <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/src/java/Controller/ProductController.java</file>
             <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/src/java/Controller/BaseController.java</file>
             <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/src/java/Config/DBConnection.java</file>
+            <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/src/java/Servlet/CreateServlet.java</file>
             <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/src/java/Query/ProductQuery.java</file>
             <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/web/index.jsp</file>
+            <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/web/WEB-INF/web.xml</file>
+            <file>file:/Users/arkan481/NetBeansProjects/JSPIntro/web/create.jsp</file>
         </group>
     </open-files>
 </project-private>

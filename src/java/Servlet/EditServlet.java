@@ -1,18 +1,17 @@
-package Servlet;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import Config.DBConnection;
-import Controller.BaseController;
+package Servlet;
+
 import Controller.ProductController;
 import Model.ProductModel;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author arkan481
  */
-public class IndexServlet extends HttpServlet {
+public class EditServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,12 +36,8 @@ public class IndexServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -58,29 +53,23 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatch = request.getRequestDispatcher("/index.jsp");
-        
-        ProductController productController = new ProductController();
-        List<ProductModel> products = productController.get();
-                
-        request.setAttribute("data", products);
-                
-        dispatch.forward(request, response);
-        processRequest(request, response);
+        try {
+            String id = request.getParameter("id");
+            
+            System.out.println("the id: "+id);
+            
+            ProductController pc = new ProductController();
+            ProductModel pm = pc.show(id);
+            
+            request.setAttribute("product", pm);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("/edit.jsp");
+            rd.forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(EditServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp); //To change body of generated methods, choose Tools | Templates.
-        String id = req.getParameter("id");
-        PrintWriter out = resp.getWriter();
-        out.print("this is a delete method :)");
-        System.out.println("hau");
-        System.out.println("the del id: "+id);
-        processRequest(req, resp);
-    }
-    
-    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -92,21 +81,34 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         PrintWriter out = response.getWriter();
-
-        String id = request.getParameter("del");
+        
+        String id = request.getParameter("id");
+        String name = request.getParameter("productName");
+        String category = request.getParameter("category");
+        String expired_at = request.getParameter("expired_at");
+        String qty = request.getParameter("qty");
+        
+        ProductModel model = new ProductModel();
+        
+        model.setId(Integer.parseInt(id));
+        model.setProductName(name);
+        model.setCategory(category);
+        model.setExpired_at(expired_at);
+        model.setQty(Integer.parseInt(qty));
         
         ProductController pc = new ProductController();
-        boolean check = pc.delete(id);
+        boolean check = pc.update(model);
         
         if (check) {
+//            System.out.println("called :0");
             response.sendRedirect("./");
+            return;
         }else {
-            out.print("error deleting the product");
+//           out.print("error");
         }
     }
-    
-    
 
     /**
      * Returns a short description of the servlet.
