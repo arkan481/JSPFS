@@ -1,19 +1,13 @@
-package Servlet;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import Config.DBConnection;
-import Controller.BaseController;
+package Servlet;
+
 import Controller.ProductController;
-import Model.ProductModel;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author arkan481
  */
-public class IndexServlet extends HttpServlet {
+public class DeleteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,12 +31,8 @@ public class IndexServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -58,28 +48,21 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatch = request.getRequestDispatcher("/index.jsp");
+        
+        PrintWriter out = response.getWriter();
+        
+        String id = request.getParameter("id");
         
         ProductController productController = new ProductController();
-        List<ProductModel> products = productController.get();
-                
-        request.setAttribute("data", products);
-                
-        dispatch.forward(request, response);
-        processRequest(request, response);
+        boolean check = productController.delete(id);
+        
+        if (check) {
+            response.sendRedirect("./");
+        }else {
+            out.print("error");
+        }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp); //To change body of generated methods, choose Tools | Templates.
-        String id = req.getParameter("id");
-        PrintWriter out = resp.getWriter();
-        System.out.println("hau");
-        System.out.println("the del id: "+id);
-        processRequest(req, resp);
-    }
-    
-    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -91,21 +74,8 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-
-        String id = request.getParameter("del");
-        
-        ProductController pc = new ProductController();
-        boolean check = pc.delete(id);
-        
-        if (check) {
-            response.sendRedirect("./");
-        }else {
-            out.print("error deleting the product");
-        }
+        processRequest(request, response);
     }
-    
-    
 
     /**
      * Returns a short description of the servlet.

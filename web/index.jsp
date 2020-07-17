@@ -46,12 +46,12 @@
                                         <a class="btn btn-sm btn-primary" href="${pageContext.request.contextPath}/edit?id=${item.id}" name="id" value="${item.id}">
                                             Edit
                                         </a>
-                                            <form action="" method="POST">
-                                                <button class="btn btn-sm btn-danger" value="${item.id}" name="del">Delete</button>
-                                            </form>
-<!--                                        <a class="btn btn-sm btn-danger" href="${pageContext.request.contextPath}/" onclick="">
+<!--                                        <form action="" method="POST">
+                                            <button class="btn btn-sm btn-danger" value="${item.id}" name="del">Delete</button>
+                                        </form>-->
+                                        <a class="btn btn-sm btn-danger" href="${pageContext.request.contextPath}/delete?id=${item.id}" name="id" value="${item.id}">
                                             Delete
-                                        </a>-->
+                                        </a>
                                     </td>
                                 </tr>
                             </c:forEach>
